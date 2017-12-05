@@ -53,3 +53,24 @@ def buy_stocks(quantity,ticker,price,username, balance):
             return False
     else:
         return False
+
+def sell_list_of_positions(username):
+    list_of_positions_message = orm.sell_get_list_of_positions(username)
+    return list_of_positions_message
+
+def sell_stocks(username, ticker_sell_symbol, ticker_sell_quantity):
+    api_name_and_price = wrapper.get_stock_price(ticker_sell_symbol)
+    current_price = api_name_and_price[1]
+    income = float(current_price) * (ticker_sell_quantity)
+    balance_change_message, new_balance, income = orm.sell_stocks_user_table(username, income)
+    if balance_change_message is not False:
+        transaction_table_message = orm.sell_stocks_transactions_table(username, ticker_sell_symbol, ticker_sell_quantity,current_price)
+        if transaction_table_message is not False:
+            positions_table_message = orm.sell_stocks_positions_table(username, ticker_sell_symbol, ticker_sell_quantity,current_price)
+            if positions_table_message is not False:
+                print("You sold your shares for ${:.2f}".format(current_price))
+                print("Your new account balance is {:.2f}".format(new_balance))
+        else:
+            return False
+    else:
+        return False
