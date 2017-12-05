@@ -10,7 +10,7 @@ You will be endowed with $10,000.
 
 Here is the current menu once you've logged in:
 
-  B - Buy Shares
+`  B - Buy Shares
 
   S - Sell Shares
 
@@ -18,4 +18,4 @@ Here is the current menu once you've logged in:
 
   Q - Query
 
-  E - Exit
+  E - Exit`
