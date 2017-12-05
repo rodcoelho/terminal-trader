@@ -8,14 +8,4 @@ Run `trader_controller.py`. Register with a valid login and password.
 
 You will be endowed with $10,000.
 
-Here is the current menu once you've logged in:
-
-`  B - Buy Shares
-
-  S - Sell Shares
-
-  L - Look Up Info
-
-  Q - Query
-
-  E - Exit`
+Best of luck trading!
