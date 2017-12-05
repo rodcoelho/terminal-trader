@@ -142,7 +142,7 @@ def buy_stocks_positions_table(quantity,ticker,price,username, balance):
 
     # if VWAP doesn't exist in positions list then add to positions
     if len(VWAP_query) == 0:
-        print('len zeeerro')
+        # check if initial commit of symbol to position - if so we can add to position'
         cursor.execute("""
                 INSERT INTO positions(userID, symbol, quantity, VWAP)
                 VALUES('{}','{}','{}','{}')
@@ -151,42 +151,38 @@ def buy_stocks_positions_table(quantity,ticker,price,username, balance):
         cursor.close()
         connection.close()
     else:
-        # VWAP not empty
-        print('len not zero, time to add')
-        VWAP_price = VWAP_query[0][0]      #305.2
-        VWAP_quantity = VWAP_query[0][1]   # 5
+        # stock already in position - time to adjust the position
+        VWAP_price = VWAP_query[0][0]
+        VWAP_quantity = VWAP_query[0][1]
         newVWAPtop = (float(price) * float(quantity)) + (float(VWAP_price) * float(VWAP_quantity))
         newVWAPbottom = (float(VWAP_quantity) + float(quantity))
         VWAP_price = float(newVWAPtop) / float(newVWAPbottom)
         VWAPfinalprice = VWAP_price
         VWAPfinalquantity = newVWAPbottom
-        print("VWAP price is now {}".format(VWAPfinalprice))
-        print("VWAP quantity is now {}".format(VWAPfinalquantity))
+        print("VWAP price should now be {}".format(VWAPfinalprice))
+        print("VWAP quantity should now be {}".format(VWAPfinalquantity))
 
-        cursor.execute("""
-                    SELECT VWAP, quantity
-                    FROM positions
-                    WHERE userID = '{}' AND symbol = '{}';
-                                """.format(id[0], ticker))
-
-        VWAP_query = cursor.fetchall()
-        print(VWAP_query)
-
+        # update quantity
         cursor.execute("""
         UPDATE positions
-        SET VWAP = '{}' AND quantity = '{}'
+        SET quantity = '{}'
         WHERE userID = '{}' AND symbol = '{}'
-        ;""".format(VWAPfinalprice, VWAPfinalquantity, id[0], ticker))
+        ;""".format(int(VWAPfinalquantity), id[0], ticker))
 
         connection.commit()
 
+        # update VWAPprice
         cursor.execute("""
-                    SELECT VWAP, quantity
-                    FROM positions
-                    WHERE userID = '{}' AND symbol = '{}';
-                                """.format(id[0], ticker))
+                UPDATE positions
+                SET VWAP = '{}'
+                WHERE userID = '{}' AND symbol = '{}'
+                ;""".format(VWAPfinalprice, id[0], ticker))
+
+        connection.commit()
+
         VWAP_query = cursor.fetchall()
         print(VWAP_query)
+
         connection.commit()
         cursor.close()
         connection.close()
