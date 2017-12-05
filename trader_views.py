@@ -76,3 +76,25 @@ def quote_symbol():
     user_input_symbol = input("""\n
             What stock quote would you like to look up? Enter symbol: \n""")
     return user_input_symbol
+
+def pick_ticker_from_list(list_of_positions_message):
+    print_dic = dict()
+    for items in list_of_positions_message:
+        print_dic[items[0]] = items[1:]
+    print("Which of these stocks would you like to sell?")
+    print_list = []
+    for keys in print_dic:
+        print_list.append(keys)
+    print(print_list)
+    user_input_symbol = input("""Enter symbol: \n""")
+    if user_input_symbol in print_dic:
+        # amount he can sell -> print_dic[user_input_symbol][1]
+        # user picked a ticker he can sell, now we need to ask how many he would like to sell
+        print("You can sell up to {} shares of stock".format(print_dic[user_input_symbol][1]))
+        user_input_quantity = int(input("""How many would you like to sell?: \n"""))
+        if user_input_quantity <= print_dic[user_input_symbol][1] and user_input_quantity > 0:
+            return user_input_symbol ,user_input_quantity
+        else:
+            print("You can't sell that many shares")
+    else:
+        print('The ticker symbol you entered is not in your portfolio')
