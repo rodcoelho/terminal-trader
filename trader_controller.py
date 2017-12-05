@@ -21,7 +21,7 @@ def menu_after_login(username):
                 if balance_message is False:
                     break
                 else:
-                    print("Your balance is {}".format(balance_message))
+                    print("Your balance is {:.2f}".format(balance_message))
                 # get desired buy symbol
                 buy_symbol = trader_views.buy_menu()
                 #check if symbol is real and return price
@@ -51,7 +51,9 @@ def menu_after_login(username):
                             trader_models.buy_stocks(share_quantity,buy_symbol,check_symbol_exist_message,username,balance_message)
             # SELL option
             elif user_input.upper() == "S":
-                print("Sell")
+                list_of_positions_message = trader_models.sell_list_of_positions(username)
+                ticker_sell_symbol, ticker_sell_quantity = trader_views.pick_ticker_from_list(list_of_positions_message)
+                trader_models.sell_stocks(username, ticker_sell_symbol, ticker_sell_quantity)
 
             # LOOK UP option
             elif user_input.upper() == "L":
