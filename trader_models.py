@@ -3,12 +3,6 @@
 import orm
 import wrapper
 
-def buy(symbol):
-    pass
-
-    # def tell_ORM_to_make_changes_in_DB(symbol):
-    #     pass
-
 def look_up(symbol):
     company_name, company_exchange, company_symbol = wrapper.get_company_info(symbol)
     return company_name, company_exchange, company_symbol
@@ -74,3 +68,20 @@ def sell_stocks(username, ticker_sell_symbol, ticker_sell_quantity):
             return False
     else:
         return False
+
+def get_cash_stocks_prices_snapshot(username):
+    cash = orm.get_balance(username)
+    stocks_in_portfolio = orm.sell_get_list_of_positions(username)
+    if stocks_in_portfolio is not False:
+        current_prices = {}
+        # [ (ticker, price, quantity ) ]
+        for stocks in stocks_in_portfolio:
+            name, price = wrapper.get_stock_price(stocks[0])
+            current_prices[stocks[0]]=price
+        return cash, stocks_in_portfolio, current_prices
+    else:
+        return cash, stocks_in_portfolio, False
+
+def get_all_users():
+    list_of_users = orm.get_all_users()
+    return list_of_users

@@ -38,9 +38,14 @@ def get_stock_price(string):
                         name = data[key]
             return [name, price]
         else:
-            return [None]
+            print('\n\n\n')
+            print('API STATUS CODE:' + str(r.status_code))
+            print('\n\n\n')
+            return [None, None]
     else:
-        return [None]
+        return [None, None]
+
+
 
 if __name__ == "__main__":
     # get company info test

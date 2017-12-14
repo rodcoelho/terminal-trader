@@ -1,5 +1,5 @@
 import sqlite3
-# needle
+
 connection = sqlite3.connect('stocktrade.db')
 cursor = connection.cursor()
 
