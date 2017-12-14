@@ -10,7 +10,7 @@ def register(username,password):
     try:
         cursor.execute("""
 INSERT INTO users(name, password, balance)
-VALUES ('{}','{}',10000);
+VALUES ('{}','{}',100000);
     """.format(username,password))
         connection.commit()
         cursor.close()
@@ -159,8 +159,6 @@ def buy_stocks_positions_table(quantity,ticker,price,username, balance):
         VWAP_price = float(newVWAPtop) / float(newVWAPbottom)
         VWAPfinalprice = VWAP_price
         VWAPfinalquantity = newVWAPbottom
-        print("VWAP price should now be {}".format(VWAPfinalprice))
-        print("VWAP quantity should now be {}".format(VWAPfinalquantity))
 
         # update quantity
         cursor.execute("""
@@ -313,3 +311,26 @@ def sell_stocks_positions_table(username, ticker_sell_symbol, ticker_sell_quanti
     cursor.close()
     connection.close()
     return True
+
+def get_all_users():
+    connection = sqlite3.connect('stocktrade.db')
+    cursor = connection.cursor()
+    try:
+        cursor.execute("""
+            SELECT name
+            FROM users
+            ;
+                """)
+        fetch = cursor.fetchall()
+        f2 = []
+        for tups in fetch:
+            f2.append(list(tups))
+        connection.commit()
+        cursor.close()
+        connection.close()
+        return f2
+    except:
+        connection.commit()
+        cursor.close()
+        connection.close()
+        return False

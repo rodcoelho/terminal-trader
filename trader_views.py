@@ -41,13 +41,21 @@ def display_menu():
     user_input = input(
 """\n TERMINAL TRADER
 Select an option:
+(P) View Portfolio
 (B) Buy Stock
 (S) Sell Stock
 (L) Look Up Symbol
 (Q) Quote Symbol
+(A) Admin
 (E) Exit Game\n"""
 )
     return user_input
+
+def ask_for_admin_password():
+    user_input = input(
+        """\n What is Admin password?\n"""
+    )
+    return str(user_input)
 
 def buy_menu():
     user_input_buy_symbol = input("""What stock would you like to buy? Enter Symbol: \n""")
